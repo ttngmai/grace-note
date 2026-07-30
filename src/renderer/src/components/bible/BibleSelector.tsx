@@ -175,11 +175,11 @@ export default function BibleSelector(): JSX.Element {
                         setSelectedBible({ book: el.id, chapter: null, verse: null })
                       }}
                       css={[
-                        tw`flex items-center h-28pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold`,
+                        tw`flex items-center h-28pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-red-600`,
                         el.id <= 39
                           ? tw`bg-green-100 hover:bg-green-200`
                           : tw`bg-red-100 hover:bg-red-200`,
-                        el.id === selectedBible.book && tw`font-bold text-blue-600`
+                        el.id === selectedBible.book && tw`font-bold text-red-600`
                       ]}
                     >
                       <span>{el.name}</span>
@@ -195,11 +195,11 @@ export default function BibleSelector(): JSX.Element {
                         setSelectedBible({ ...selectedBible, chapter: el.chapter, verse: null })
                       }}
                       css={[
-                        tw`flex items-center h-28pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold`,
+                        tw`flex items-center h-28pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-red-600`,
                         selectedBible.book && selectedBible.book <= 39
                           ? tw`bg-green-100 hover:bg-green-200`
                           : tw`bg-red-100 hover:bg-red-200`,
-                        el.chapter === selectedBible.chapter && tw`font-bold text-blue-600`
+                        el.chapter === selectedBible.chapter && tw`font-bold text-red-600`
                       ]}
                     >
                       {`${el.chapter}${el.book !== 19 ? '장' : '편'}`}
@@ -223,11 +223,11 @@ export default function BibleSelector(): JSX.Element {
                         }
                       }}
                       css={[
-                        tw`flex items-center h-28pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold`,
+                        tw`flex items-center h-28pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-red-600`,
                         selectedBible.book && selectedBible.book <= 39
                           ? tw`bg-green-100 hover:bg-green-200`
                           : tw`bg-red-100 hover:bg-red-200`,
-                        index + 1 === selectedBible.verse && tw`font-bold text-blue-600`
+                        index + 1 === selectedBible.verse && tw`font-bold text-red-600`
                       ]}
                     >
                       {`${index + 1}절`}
