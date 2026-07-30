@@ -31,7 +31,7 @@ export default function MainPageNavigationBar(): JSX.Element {
           onClick={() => {
             window.context.openBibleVerseWindow()
           }}
-          title="성구 검색"
+          title="성구"
           size="icon"
         >
           <BibleVerseSearchIcon className="w-5 h-5" />
@@ -51,7 +51,7 @@ export default function MainPageNavigationBar(): JSX.Element {
           onClick={() => {
             window.context.openLexiconWindow()
           }}
-          title="원어코드 검색"
+          title="원어코드"
           size="icon"
         >
           <LexicalCodeSearchIcon className="w-5 h-5" />

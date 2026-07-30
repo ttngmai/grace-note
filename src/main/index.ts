@@ -263,7 +263,7 @@ ipcMain.handle('open-bible-verse-window', async () => {
   }
 
   bibleVerseWindow = new BrowserWindow({
-    title: '성구 검색',
+    title: '성구',
     width: 800,
     height: 670,
     autoHideMenuBar: true,
@@ -296,7 +296,7 @@ ipcMain.on('open-lexicon-window', (_, keyword) => {
   }
 
   lexiconWindow = new BrowserWindow({
-    title: '원어코드 검색',
+    title: '원어코드',
     width: 800,
     height: 670,
     autoHideMenuBar: true,
