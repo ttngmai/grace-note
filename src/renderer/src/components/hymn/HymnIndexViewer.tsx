@@ -1,10 +1,30 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { HYMN_CATEGORY_INDEX } from '@shared/hymnCategoryIndex'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { hymnAtom, hymnPageViewModeAtom, hymnViewerAtom, scoreViewModeAtom } from '@renderer/store'
 import tw, { css } from 'twin.macro'
 import { RuleSet } from 'styled-components'
 import { isLight } from '@renderer/utils/contrastColor'
+
+/** 선택된 찬송가가 속한 카테고리 레이블들을 재귀적으로 수집 */
+function findCategoryLabelsForHymn(
+  nodes: readonly HymnNode[],
+  hymnNumber: string,
+  parentLabels: string[] = []
+): string[] | null {
+  for (const node of nodes) {
+    if (node.type === 'hymn') {
+      if (node.hymnNumber === hymnNumber) return parentLabels
+      continue
+    }
+    const labels = findCategoryLabelsForHymn(node.children, hymnNumber, [
+      ...parentLabels,
+      node.label
+    ])
+    if (labels) return labels
+  }
+  return null
+}
 
 type HymnNode =
   | {
@@ -25,6 +45,16 @@ export default function HymnIndexViewer(): JSX.Element {
   const settings = useAtomValue(hymnViewerAtom)
 
   const [openMap, setOpenMap] = useState<Record<string, boolean>>({})
+
+  const selectedHymnCategoryLabels = useMemo(() => {
+    const num = hymn?.hymn_number
+    if (!num) return new Set<string>()
+    const labels = findCategoryLabelsForHymn(
+      HYMN_CATEGORY_INDEX as unknown as readonly HymnNode[],
+      String(num)
+    )
+    return new Set(labels ?? [])
+  }, [hymn?.hymn_number])
 
   const toggleOpen = (label: string): void => {
     setOpenMap((prev) => ({
@@ -136,13 +166,16 @@ export default function HymnIndexViewer(): JSX.Element {
     const selectedHymnNumber = hymn?.hymn_number || null
 
     if (node.type === 'category') {
+      const isSelectedCategory = selectedHymnCategoryLabels.has(node.label)
       return (
         <div>
           <div
             onClick={() => toggleOpen(node.label)}
             css={[
               tw`flex items-center gap-4pxr py-2pxr cursor-pointer select-none hover:font-bold`,
-              depth !== 0 && (isLight ? tw`hover:text-blue-600` : tw`hover:text-blue-300`)
+              isLight ? tw`hover:text-red-600` : tw`hover:text-red-300`,
+              isSelectedCategory &&
+                (isLight ? tw`font-bold text-red-600` : tw`font-bold text-red-300`)
             ]}
           >
             <span className="text-[0.8em]">{openMap[node.label] ? '▼' : '▶'}</span>
@@ -151,7 +184,10 @@ export default function HymnIndexViewer(): JSX.Element {
           {openMap[node.label] && (
             <ul css={tw`pl-2`}>
               {node.children.map((child) => (
-                <li key={(child as any).label ?? (child as any).hymnNumber} css={liStyle(false)}>
+                <li
+                  key={child.type === 'category' ? child.label : child.hymnNumber}
+                  css={liStyle(false)}
+                >
                   {renderNode(child, depth + 1, isLight)}
                 </li>
               ))}
