@@ -24,14 +24,15 @@ export const PANEL_CATEGORIES_AND_VERSIONS: { [key in PanelCategory]: string[] }
     '현대어',
     '현대인',
     '중문화간체',
+    'NIRV (G3)',
+    'NLT (G6)',
     'KJV1769',
-    'YLT',
     'NIV2011',
     'NAS2020'
   ],
   [PanelCategory.COMMENTARY]: ['매튜헨리', '성경관주'],
   [PanelCategory.CODED_BIBLE]: ['개역개정S', '개역한글S'],
-  [PanelCategory.LEXICON]: ['한글원어', '원어분해'],
+  [PanelCategory.LEXICON]: ['원어설명', '원어분해'],
   [PanelCategory.NONE]: []
 }
 
