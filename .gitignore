@@ -1,0 +1,9 @@
+node_modules
+.yarn/install-state.gz
+dist
+out
+.DS_Store
+*.log*
+src/database
+src/audios
+src/images
