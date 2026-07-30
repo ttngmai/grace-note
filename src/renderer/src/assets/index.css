@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Noto Serif Hebrew';
+    src: url('/fonts/NotoSerifHebrew.ttf') format('truetype-variations');
+    font-optical-sizing: auto;
+    font-weight: 1 900;
+    font-style: normal;
+    font-variation-settings: 'wdth' 100;
+  }
+
+  @font-face {
+    font-family: 'Noto Serif';
+    src: url('/fonts/NotoSerif.ttf') format('truetype-variations');
+    font-optical-sizing: auto;
+    font-weight: 1 900;
+    font-style: normal;
+    font-variation-settings: 'wdth' 100;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  html {
+    font-family: 'Pretendard Variable', Pretendard;
+  }
+
+  :root {
+    --radius: 0.5rem;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  .scroll-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar:horizontal {
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: oklch(0.928 0.006 264.531);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.872 0.01 258.338);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.707 0.022 261.325);
+  }
+
+  *:focus {
+    outline: none;
+  }
+
+  input:focus {
+    outline: none;
+    border: 2px solid oklch(62.3% 0.214 259.815);
+  }
+}
