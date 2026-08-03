@@ -27,7 +27,7 @@ export const PANEL_CATEGORIES_AND_VERSIONS: { [key in PanelCategory]: string[] }
     'NIRV (G3)',
     'NLT (G6)',
     'KJV1769',
-    'NIV2011',
+    'NIV1984',
     'NAS2020'
   ],
   [PanelCategory.COMMENTARY]: ['매튜헨리', '성경관주'],
