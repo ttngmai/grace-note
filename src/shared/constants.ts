@@ -30,7 +30,7 @@ export const PANEL_CATEGORIES_AND_VERSIONS: { [key in PanelCategory]: string[] }
     'NIV1984',
     'NAS2020'
   ],
-  [PanelCategory.COMMENTARY]: ['매튜헨리', '성경관주'],
+  [PanelCategory.COMMENTARY]: ['매튜헨리', '성경관주', '풀핏주석'],
   [PanelCategory.CODED_BIBLE]: ['개역개정S', '개역한글S'],
   [PanelCategory.LEXICON]: ['원어설명', '원어분해'],
   [PanelCategory.NONE]: []
