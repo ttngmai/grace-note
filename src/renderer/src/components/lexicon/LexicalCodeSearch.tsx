@@ -5,6 +5,7 @@ import Button from '../common/Button2'
 import { IconSearch } from '@tabler/icons-react'
 import CustomSelect from '../common/CustomSelect'
 import { PANEL_CATEGORIES_AND_VERSIONS } from '@shared/constants'
+import { normalizeLexicalCode } from '@shared/lexicalCode'
 import { FindLexicalCodeFromBibleParams, PanelCategory } from '@shared/types'
 import BibleRangeSelector from '../bible/BibleRangeSelector'
 import tw, { TwStyle } from 'twin.macro'
@@ -24,7 +25,7 @@ export default function LexicalCodeSearch(): JSX.Element {
 
   const handleCodeChange = (index: number, value: string): void => {
     const updatedCodes = [...tempSearchParams.codes]
-    updatedCodes[index] = value.trim().toUpperCase()
+    updatedCodes[index] = normalizeLexicalCode(value)
     setTempSearchParams({ ...tempSearchParams, codes: updatedCodes })
   }
 
@@ -75,7 +76,7 @@ export default function LexicalCodeSearch(): JSX.Element {
       setTempSearchParams((prev) => {
         const condition = {
           ...prev,
-          codes: keyword ? [keyword] : prev.codes
+          codes: keyword ? [normalizeLexicalCode(keyword)] : prev.codes
         }
 
         handleSearchLexicalCode(condition)

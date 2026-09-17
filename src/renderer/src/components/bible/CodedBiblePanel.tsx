@@ -8,6 +8,7 @@ import {
 } from '@renderer/store'
 import { isLight } from '@renderer/utils/contrastColor'
 import { BIBLE_COUNT_INFO } from '@shared/constants'
+import { normalizeLexicalCode } from '@shared/lexicalCode'
 import { Bible } from '@shared/models'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
@@ -34,7 +35,13 @@ export default function CodedBiblePanel({
   const book = useAtomValue(bookAtom)
   const chapter = useAtomValue(chapterAtom)
   const [verse, setVerse] = useAtom(verseAtom)
-  const setLexicalCode = useSetAtom(lexicalCodeAtom)
+  const setLexicalCodeRaw = useSetAtom(lexicalCodeAtom)
+  const setLexicalCode = useCallback(
+    (code: string): void => {
+      setLexicalCodeRaw(normalizeLexicalCode(code))
+    },
+    [setLexicalCodeRaw]
+  )
 
   const [bibleData, setBibleData] = useState<Bible[]>()
   const [lastVerse, setLastVerse] = useState<number>(0)
