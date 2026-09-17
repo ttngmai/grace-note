@@ -142,7 +142,7 @@ const CommentaryText = forwardRef<HTMLDivElement, CommentaryTextProps>(
         data-verse={verse}
         css={[tw`pl-[1em] mb-[0.25rem] -indent-[1em]`, verse === 1 && tw`pt-[0.25rem]`]}
       >
-        <span css={[tw`whitespace-pre`, isLight ? tw`text-blue-600` : tw`text-white`]}>
+        <span css={[tw`whitespace-pre font-bold`, isLight ? tw`text-red-600` : tw`text-red-300`]}>
           {verse}{' '}
         </span>
         <span dangerouslySetInnerHTML={{ __html: btext }}></span>

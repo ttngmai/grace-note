@@ -392,7 +392,7 @@ const KeywordMatchedVersesItem = ({
             e.preventDefault()
             onLabelClick(version, book, chapter, verse)
           }}
-          css={[tw`w-fit font-bold`, isLight ? tw`text-blue-600` : tw`text-white`]}
+          css={[tw`w-fit font-bold`, isLight ? tw`text-red-600` : tw`text-red-300`]}
         >
           {`${BOOK_INFO.find((el) => el.id === book)?.shortName || ''} ${chapter}:${verse}`}
         </a>
@@ -439,14 +439,14 @@ const FullChaptersWithKeywordItem = ({
       <div className="flex">
         <span
           css={[
-            tw`mr-[0.5em]`,
+            tw`mr-[0.5em] font-bold`,
             isHighlighted
               ? isLight
-                ? tw`text-white`
-                : tw`text-blue-600`
+                ? tw`text-red-300`
+                : tw`text-red-600`
               : isLight
-                ? tw`text-blue-600`
-                : tw`text-white`
+                ? tw`text-red-600`
+                : tw`text-red-300`
           ]}
         >
           {verse}
