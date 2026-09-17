@@ -5,6 +5,7 @@ import {
   lexiconViewerAtom
 } from '@renderer/store'
 import { BOOK_INFO } from '@shared/constants'
+import { normalizeLexicalCode } from '@shared/lexicalCode'
 import { useAtomValue } from 'jotai'
 import tw, { TwStyle } from 'twin.macro'
 import { forwardRef, Key, useEffect, useRef, useState } from 'react'
@@ -171,10 +172,10 @@ const getHighlightColor = (index: number): TwStyle[] => {
 }
 
 const normalizeCodeSlots = (codes?: string[]): string[] =>
-  [0, 1, 2].map((i) => (codes?.[i] ?? '').trim().toUpperCase())
+  [0, 1, 2].map((i) => normalizeLexicalCode(codes?.[i] ?? ''))
 
 const slotIndexOf = (code: string, slots: string[]): number => {
-  const target = (code ?? '').trim().toUpperCase()
+  const target = normalizeLexicalCode(code ?? '')
   return slots.findIndex((s) => s !== '' && s === target)
 }
 
@@ -192,7 +193,7 @@ export const parseRawText = (
     if (index % 3 === 1) {
       const type = part // 'H' or 'G'
       const number = parts[index + 1]
-      const code = `${type}${number}`.toUpperCase()
+      const code = normalizeLexicalCode(`${type}${number}`)
       const si = slotIndexOf(code, slots)
       const codeStyle =
         si >= 0
@@ -226,7 +227,7 @@ export const parseRawTextForLexicon = (
     if (!m) return ''
 
     const [, mainText, type, rawCode, rootText, pronunciation, grammar, meaning] = m
-    const code = (rawCode ?? '').toUpperCase()
+    const code = normalizeLexicalCode(rawCode ?? '')
     const si = slotIndexOf(code, slots)
     const codeStyle =
       si >= 0

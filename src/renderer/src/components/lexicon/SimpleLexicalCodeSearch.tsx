@@ -5,6 +5,7 @@ import { useAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import * as Label from '@radix-ui/react-label'
 import tw from 'twin.macro'
+import { normalizeLexicalCode } from '@shared/lexicalCode'
 
 export default function SimpleLexicalCodeSearch(): JSX.Element {
   const [lexicalCode, setLexicalCode] = useAtom(lexicalCodeAtom)
@@ -13,18 +14,16 @@ export default function SimpleLexicalCodeSearch(): JSX.Element {
   const [keyword, setKeyword] = useState<string>(lexicalCode)
 
   const openInLexiconPage = (keyword: string): void => {
-    setSearchParams({ ...searchParams, codes: [keyword] })
-    window.context.openLexiconWindow(keyword)
+    const code = normalizeLexicalCode(keyword)
+    setSearchParams({ ...searchParams, codes: [code] })
+    window.context.openLexiconWindow(code)
   }
 
   const updateLexicalCode = (direction: 'prev' | 'next'): void => {
-    const match = keyword
-      .trim()
-      .toUpperCase()
-      .match(/^([HG])(\d+)$/)
+    const match = normalizeLexicalCode(keyword).match(/^([HG])(\d+)([a-z])?$/)
     if (!match) return
 
-    const [_, prefix, numStr] = match
+    const [, prefix, numStr] = match
     const num = parseInt(numStr, 10)
     const newNum = direction === 'prev' ? num - 1 : num + 1
 
@@ -35,7 +34,7 @@ export default function SimpleLexicalCodeSearch(): JSX.Element {
 
   const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
-      setLexicalCode(keyword ? keyword.trim().toUpperCase() : '')
+      setLexicalCode(keyword ? normalizeLexicalCode(keyword) : '')
     }
   }
 
@@ -61,7 +60,7 @@ export default function SimpleLexicalCodeSearch(): JSX.Element {
         <Button
           type="button"
           onClick={() => {
-            setLexicalCode(keyword ? keyword.trim().toUpperCase() : '')
+            setLexicalCode(keyword ? normalizeLexicalCode(keyword) : '')
             if (keyword) {
               openInLexiconPage(keyword)
             }

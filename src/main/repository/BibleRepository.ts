@@ -1,6 +1,7 @@
 import { FindBible, FindKeywordFromBible, FindLexicalCodeFromBible } from '@shared/types.js'
 import { getBibleDB } from './getDB.js'
 import { Bible } from '@shared/models.js'
+import { normalizeLexicalCode } from '@shared/lexicalCode.js'
 
 export const findBible: FindBible = async (version, book, chapter) => {
   try {
@@ -98,7 +99,7 @@ export const findLexicalCodeFromBible: FindLexicalCodeFromBible = async ({
 
     const conditions = codes
       .filter((code) => code.trim() !== '')
-      .map((code) => code.trim().toUpperCase())
+      .map((code) => normalizeLexicalCode(code))
       .map((code) => `btext LIKE '%<W${code}>%'`)
     const codeCondition = matchType === 'any' ? conditions.join(' OR ') : conditions.join(' AND ')
 
