@@ -8,7 +8,7 @@ import {
 } from '@renderer/store'
 import { Hymn } from '@shared/models'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { forwardRef, useRef } from 'react'
+import { createElement, forwardRef, Fragment, useRef, type ReactNode } from 'react'
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 import Spinner from '../common/Spinner'
 import { formatNumberWithComma } from '@renderer/utils/numberFormat'
@@ -229,6 +229,57 @@ type LyricsRendererProps = {
   keywords: string[]
 }
 
+const ALLOWED_HTML_TAGS = new Set([
+  'b',
+  'br',
+  'div',
+  'em',
+  'font',
+  'i',
+  'p',
+  'small',
+  'span',
+  'strong',
+  'sub',
+  'sup',
+  'u'
+])
+
+const renderHtmlWithKeywordHighlights = (html: string, keywords: string[]): ReactNode => {
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  return Array.from(doc.body.childNodes).map((node, index) =>
+    domNodeToReact(node, keywords, `n-${index}`)
+  )
+}
+
+const domNodeToReact = (node: ChildNode, keywords: string[], key: string): ReactNode => {
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent ?? ''
+    if (!text) return null
+    return createElement(Fragment, { key }, ...highlightKeywords(text, keywords))
+  }
+
+  if (node.nodeType !== Node.ELEMENT_NODE) return null
+
+  const el = node as HTMLElement
+  const children = Array.from(el.childNodes).map((child, index) =>
+    domNodeToReact(child, keywords, `${key}-${index}`)
+  )
+  const tag = el.tagName.toLowerCase()
+
+  if (!ALLOWED_HTML_TAGS.has(tag)) {
+    return createElement(Fragment, { key }, ...children)
+  }
+
+  const props: { key: string; color?: string; className?: string } = { key }
+  const color = el.getAttribute('color')
+  const className = el.getAttribute('class')
+  if (color) props.color = color
+  if (className) props.className = className
+
+  return createElement(tag, props, ...children)
+}
+
 export const LyricsRenderer: React.FC<LyricsRendererProps> = ({
   hymnNumber,
   lyrics,
@@ -237,13 +288,7 @@ export const LyricsRenderer: React.FC<LyricsRendererProps> = ({
   if (!lyrics) return null
 
   if (hymnNumber >= 701) {
-    const lines = htmlToPlainText(lyrics).split('\n')
-
-    return lines.map((line, index) => {
-      const trimmedLine = line.trim()
-
-      return <p key={index}>{highlightKeywords(trimmedLine, keywords)}</p>
-    })
+    return <div>{renderHtmlWithKeywordHighlights(lyrics, keywords)}</div>
   }
 
   const lines = lyrics.split('\n')
@@ -267,25 +312,4 @@ export const LyricsRenderer: React.FC<LyricsRendererProps> = ({
       })}
     </div>
   )
-}
-
-const htmlToPlainText = (html?: string): string => {
-  if (!html) return ''
-
-  const withNewlines = html.replace(/<br\s*\/?>/gi, '\n')
-
-  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-    const div = document.createElement('div')
-    div.innerHTML = withNewlines
-    return div.textContent || ''
-  }
-
-  const stripped = withNewlines.replace(/<\/?[^>]+>/g, '')
-  return stripped
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&amp;/gi, '&')
-    .replace(/&quot;/gi, '"')
-    .replace(/&#39;/g, "'")
 }
