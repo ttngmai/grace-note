@@ -150,4 +150,4 @@ export default function PanelCategorySelector({
 }
 
 const dropdownMenuItemStyle =
-  'flex items-center gap-4pxr h-32pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-blue-600'
+  'flex items-center gap-4pxr h-32pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-red-600 data-[highlighted]:font-bold data-[highlighted]:text-red-600'
