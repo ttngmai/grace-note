@@ -1,6 +1,7 @@
 import tw from 'twin.macro'
 import { useSortable } from '@dnd-kit/sortable'
 import { IconGripVertical } from '@tabler/icons-react'
+import { isLexiconExplanationVersion, LEXICON_EXPLANATION_VERSION } from '@shared/constants'
 import { PanelCategory, PanelLayout, PanelSettings } from '@shared/types'
 import PanelSettingsDropdown from './PanelSettingsDropdown'
 import PanelCategorySelector from './PanelCategorySelector'
@@ -110,6 +111,7 @@ const Panel: React.FC<PanelProps> = ({
   return (
     <div
       ref={!isOverlay ? setNodeRef : undefined}
+      className="panel-rich-text"
       css={[
         tw`flex flex-col h-full border rounded shadow`,
         isOver ? tw`border-blue-600` : undefined
@@ -121,7 +123,7 @@ const Panel: React.FC<PanelProps> = ({
 
         <PanelCategorySelector
           panelId={id}
-          placeholder={version}
+          placeholder={isLexiconExplanationVersion(version) ? LEXICON_EXPLANATION_VERSION : version}
           sx={tw`w-[calc(100%-64px)] h-32pxr rounded-md hover:bg-[#F4F4F5] font-bold`}
         />
 

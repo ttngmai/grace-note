@@ -71,7 +71,7 @@ export default function PanelCategorySelector({
 
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger className={dropdownMenuItemStyle}>
-              주석
+              {PanelCategory.COMMENTARY}
               <IconChevronRight size={14} className="ml-auto" />
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal>
@@ -93,7 +93,7 @@ export default function PanelCategorySelector({
 
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger className={dropdownMenuItemStyle}>
-              코드역본
+              {PanelCategory.CODED_BIBLE}
               <IconChevronRight size={14} className="ml-auto" />
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal>
@@ -115,7 +115,7 @@ export default function PanelCategorySelector({
 
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger className={dropdownMenuItemStyle}>
-              원어사전
+              {PanelCategory.LEXICON}
               <IconChevronRight size={14} className="ml-auto" />
             </DropdownMenu.SubTrigger>
             <DropdownMenu.Portal>

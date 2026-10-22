@@ -17,9 +17,9 @@ export type PagedResult<T> = {
 
 export enum PanelCategory {
   BIBLE = '성경',
-  COMMENTARY = '주석',
-  CODED_BIBLE = '코드역본',
-  LEXICON = '원어사전',
+  COMMENTARY = '해석',
+  CODED_BIBLE = '원어코드',
+  LEXICON = '원어',
   NONE = '없음'
 }
 
