@@ -86,7 +86,7 @@ export default function PanelSettingsDropdown({
               onSelect={() => {
                 toggleBasePanel(panelId)
               }}
-              css={dropdownMenuItemStyle}
+              className={dropdownMenuItemStyle}
             >
               {!settings.isBase ? '기준으로 지정' : '기준 지정 해제'}
             </DropdownMenu.Item>
@@ -94,7 +94,7 @@ export default function PanelSettingsDropdown({
               onSelect={() => {
                 setOpenPanelTitleSizeModal(true)
               }}
-              css={dropdownMenuItemStyle}
+              className={dropdownMenuItemStyle}
             >
               제목 크기 (공통)
             </DropdownMenu.Item>
@@ -102,7 +102,7 @@ export default function PanelSettingsDropdown({
               onSelect={() => {
                 setOpenPanelContentSizeModal(true)
               }}
-              css={dropdownMenuItemStyle}
+              className={dropdownMenuItemStyle}
             >
               내용 크기 (공통)
             </DropdownMenu.Item>
@@ -110,7 +110,7 @@ export default function PanelSettingsDropdown({
               onSelect={() => {
                 setOpenStylesModal(true)
               }}
-              css={dropdownMenuItemStyle}
+              className={dropdownMenuItemStyle}
             >
               배경·글자 색
             </DropdownMenu.Item>
@@ -119,7 +119,7 @@ export default function PanelSettingsDropdown({
                 onSelect={() => {
                   handleMerge(panelId)
                 }}
-                css={dropdownMenuItemStyle}
+                className={dropdownMenuItemStyle}
               >
                 합치기
               </DropdownMenu.Item>
@@ -129,7 +129,7 @@ export default function PanelSettingsDropdown({
                 onSelect={() => {
                   handleUnmerge(panelId)
                 }}
-                css={dropdownMenuItemStyle}
+                className={dropdownMenuItemStyle}
               >
                 나누기
               </DropdownMenu.Item>
@@ -157,4 +157,5 @@ export default function PanelSettingsDropdown({
   )
 }
 
-const dropdownMenuItemStyle = tw`flex items-center gap-4pxr h-32pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-blue-600`
+const dropdownMenuItemStyle =
+  'flex items-center gap-4pxr h-32pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-red-600 data-[highlighted]:font-bold data-[highlighted]:text-red-600'
