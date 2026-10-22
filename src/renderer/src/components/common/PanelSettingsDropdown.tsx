@@ -10,6 +10,7 @@ import { panelGridAtom } from '@renderer/store'
 import { mergePanels, unmergePanel } from '@renderer/utils/panelUtils'
 import { PANEL_ROWS } from '@shared/constants'
 import PanelTitleSizeModal from './PanelTitleSizeModal'
+import PanelContentSizeModal from './PanelContentSizeModal'
 
 type PanelSettingsDropdownProps = {
   panelId: string
@@ -25,6 +26,7 @@ export default function PanelSettingsDropdown({
   const settings = panelGrid.settings[panelId]
 
   const [openPanelTitleSizeModal, setOpenPanelTitleSizeModal] = useState<boolean>(false)
+  const [openPanelContentSizeModal, setOpenPanelContentSizeModal] = useState<boolean>(false)
   const [openStylesModal, setOpenStylesModal] = useState<boolean>(false)
 
   const toggleBasePanel = (id: string): void => {
@@ -84,7 +86,7 @@ export default function PanelSettingsDropdown({
               onSelect={() => {
                 toggleBasePanel(panelId)
               }}
-              css={dropdownMenuItemStyle}
+              className={dropdownMenuItemStyle}
             >
               {!settings.isBase ? '기준으로 지정' : '기준 지정 해제'}
             </DropdownMenu.Item>
@@ -92,15 +94,23 @@ export default function PanelSettingsDropdown({
               onSelect={() => {
                 setOpenPanelTitleSizeModal(true)
               }}
-              css={dropdownMenuItemStyle}
+              className={dropdownMenuItemStyle}
             >
               제목 크기 (공통)
             </DropdownMenu.Item>
             <DropdownMenu.Item
               onSelect={() => {
+                setOpenPanelContentSizeModal(true)
+              }}
+              className={dropdownMenuItemStyle}
+            >
+              내용 크기 (공통)
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onSelect={() => {
                 setOpenStylesModal(true)
               }}
-              css={dropdownMenuItemStyle}
+              className={dropdownMenuItemStyle}
             >
               배경·글자 색
             </DropdownMenu.Item>
@@ -109,7 +119,7 @@ export default function PanelSettingsDropdown({
                 onSelect={() => {
                   handleMerge(panelId)
                 }}
-                css={dropdownMenuItemStyle}
+                className={dropdownMenuItemStyle}
               >
                 합치기
               </DropdownMenu.Item>
@@ -119,7 +129,7 @@ export default function PanelSettingsDropdown({
                 onSelect={() => {
                   handleUnmerge(panelId)
                 }}
-                css={dropdownMenuItemStyle}
+                className={dropdownMenuItemStyle}
               >
                 나누기
               </DropdownMenu.Item>
@@ -138,8 +148,14 @@ export default function PanelSettingsDropdown({
           <PanelTitleSizeModal onClose={() => setOpenPanelTitleSizeModal(false)} />
         </ModalPortal>
       )}
+      {openPanelContentSizeModal && (
+        <ModalPortal>
+          <PanelContentSizeModal onClose={() => setOpenPanelContentSizeModal(false)} />
+        </ModalPortal>
+      )}
     </>
   )
 }
 
-const dropdownMenuItemStyle = tw`flex items-center gap-4pxr h-32pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-blue-600`
+const dropdownMenuItemStyle =
+  'flex items-center gap-4pxr h-32pxr px-8pxr py-4pxr text-[14px] select-none cursor-pointer hover:font-bold hover:text-red-600 data-[highlighted]:font-bold data-[highlighted]:text-red-600'
