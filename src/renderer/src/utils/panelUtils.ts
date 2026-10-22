@@ -1,5 +1,40 @@
-import { MAX_PANELS, PANEL_COLUMNS } from '@shared/constants'
+import {
+  LEXICON_EXPLANATION_SECONDARY_VERSION,
+  LEXICON_EXPLANATION_VERSION,
+  MAX_PANELS,
+  PANEL_COLUMNS
+} from '@shared/constants'
 import { PanelCategory, PanelGrid, PanelLayout, PanelSettings } from '@shared/types'
+
+const LEGACY_PANEL_CATEGORIES: Record<string, PanelCategory> = {
+  주석: PanelCategory.COMMENTARY,
+  코드역본: PanelCategory.CODED_BIBLE,
+  원어사전: PanelCategory.LEXICON
+}
+
+export function migratePanelGridCategories(grid: PanelGrid): PanelGrid {
+  if (!grid?.settings) return grid
+
+  let changed = false
+  const settings = { ...grid.settings }
+
+  for (const [id, setting] of Object.entries(settings)) {
+    const category = LEGACY_PANEL_CATEGORIES[setting.category]
+    const version =
+      setting.version === LEXICON_EXPLANATION_SECONDARY_VERSION
+        ? LEXICON_EXPLANATION_VERSION
+        : undefined
+    if (!category && !version) continue
+    settings[id] = {
+      ...setting,
+      ...(category ? { category } : {}),
+      ...(version ? { version } : {})
+    }
+    changed = true
+  }
+
+  return changed ? { ...grid, settings } : grid
+}
 
 export function createInitialPanelGrid(): PanelGrid {
   const panels: PanelLayout[] = Array.from({ length: MAX_PANELS }, (_, i) => {

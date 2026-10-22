@@ -1,5 +1,5 @@
 import { createPersistentAtom } from '@renderer/utils/createPersistentAtom'
-import { createInitialPanelGrid } from '@renderer/utils/panelUtils'
+import { createInitialPanelGrid, migratePanelGridCategories } from '@renderer/utils/panelUtils'
 import { PANEL_CATEGORIES_AND_VERSIONS, PANEL_COLUMNS } from '@shared/constants'
 import { Bible, Hymn, Theme } from '@shared/models'
 import {
@@ -16,7 +16,18 @@ import {
 } from '@shared/types'
 import { atom } from 'jotai'
 
-export const panelGridAtom = createPersistentAtom<PanelGrid>('panelGrid', createInitialPanelGrid())
+function loadPanelGrid(): PanelGrid {
+  const stored = window.electron.store.get('panelGrid') as PanelGrid | undefined
+  if (!stored) return createInitialPanelGrid()
+
+  const migrated = migratePanelGridCategories(stored)
+  if (migrated !== stored) {
+    window.electron.store.set('panelGrid', migrated)
+  }
+  return migrated
+}
+
+export const panelGridAtom = createPersistentAtom<PanelGrid>('panelGrid', loadPanelGrid())
 export const columnSelectorAtom = atom<ColumnSelectorState>({
   visible: false,
   selectedIndices: []

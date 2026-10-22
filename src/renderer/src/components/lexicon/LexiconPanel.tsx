@@ -1,7 +1,20 @@
 import { panelTextSizeAtom, lexicalCodeAtom } from '@renderer/store'
+import { isLight } from '@renderer/utils/contrastColor'
+import { LEXICON_EXPLANATION_SOURCES, isLexiconExplanationVersion } from '@shared/constants'
 import { Lexicon } from '@shared/models'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
+
+const hasLexiconContent = (entry?: Lexicon): entry is Lexicon => {
+  if (!entry) return false
+
+  const definition =
+    entry.definition
+      ?.replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/gi, ' ')
+      .trim() ?? ''
+  return definition.length > 0
+}
 
 type LexiconPanelProps = {
   version: string
@@ -17,44 +30,69 @@ export default function LexiconPanel({
   const panelTextSize = useAtomValue(panelTextSizeAtom)
   const lexicalCode = useAtomValue(lexicalCodeAtom)
 
-  const [lexiconData, setLexiconData] = useState<Lexicon[]>()
+  const [entries, setEntries] = useState<Lexicon[]>([])
 
-  const renderLexicon = (): JSX.Element | null => {
-    if (!lexiconData) return null
+  const renderEntry = (entry: Lexicon): JSX.Element => {
+    const isHebrew = entry.code?.[0] === 'H'
 
     return (
       <div className={`px-16pxr text-[${panelTextSize}px]`} style={{ color: textColor }}>
-        <span className="inline-flex items-center text-blue-600 whitespace-pre">
-          {lexiconData[0]?.code}{' '}
-        </span>
+        <span className="inline-flex items-center text-blue-600 whitespace-pre">{entry.code} </span>
         <span
-          dir={lexiconData[0]?.code?.[0] === 'H' ? 'rtl' : undefined}
+          dir={isHebrew ? 'rtl' : undefined}
           style={{
-            fontFamily: lexiconData[0]?.code?.[0] === 'H' ? 'Noto Serif Hebrew' : 'Noto Serif',
-            unicodeBidi: lexiconData[0]?.code?.[0] === 'H' ? 'plaintext' : undefined
+            fontFamily: isHebrew ? 'Noto Serif Hebrew' : 'Noto Serif',
+            unicodeBidi: isHebrew ? 'plaintext' : undefined
           }}
           className="text-[1.75em]"
         >
-          {lexiconData[0]?.word}
+          {entry.word}
         </span>
         <div>
-          <span dangerouslySetInnerHTML={{ __html: lexiconData[0]?.definition }}></span>
+          <span dangerouslySetInnerHTML={{ __html: entry.definition }}></span>
         </div>
       </div>
     )
   }
 
   useEffect(() => {
+    let cancelled = false
+
     const fetchLexicon = async (): Promise<void> => {
-      const result = await window.context.findLexicon(version, lexicalCode)
-      setLexiconData(result)
+      const sources = isLexiconExplanationVersion(version) ? LEXICON_EXPLANATION_SOURCES : [version]
+      const results = await Promise.all(
+        sources.map((source) => window.context.findLexicon(source, lexicalCode))
+      )
+
+      if (cancelled) return
+      setEntries(results.map((rows) => rows[0]).filter(hasLexiconContent))
     }
-    if (lexicalCode) fetchLexicon()
+
+    if (lexicalCode) {
+      fetchLexicon()
+    } else {
+      setEntries([])
+    }
+
+    return () => {
+      cancelled = true
+    }
   }, [version, lexicalCode])
 
   return (
     <div className="overflow-y-auto" style={{ backgroundColor }}>
-      {renderLexicon()}
+      {entries.map((entry, index) => (
+        <div key={`${entry.code}-${index}`}>
+          {index > 0 && (
+            <div
+              role="separator"
+              className="mx-16pxr my-12pxr border-t-2"
+              style={{ borderColor: isLight(backgroundColor) ? '#000' : '#fff' }}
+            />
+          )}
+          {renderEntry(entry)}
+        </div>
+      ))}
       <div className="h-screen" />
     </div>
   )

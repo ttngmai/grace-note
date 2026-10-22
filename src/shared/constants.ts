@@ -7,6 +7,17 @@ export const MAX_PANELS = 24
 export const PANEL_ROWS = 2
 export const PANEL_COLUMNS = 12
 
+export const LEXICON_EXPLANATION_VERSION = '원어설명'
+export const LEXICON_EXPLANATION_PRIMARY_DB = '원어설명1'
+export const LEXICON_EXPLANATION_SECONDARY_VERSION = '원어설명2'
+export const LEXICON_EXPLANATION_SOURCES = [
+  LEXICON_EXPLANATION_SECONDARY_VERSION,
+  LEXICON_EXPLANATION_PRIMARY_DB
+] as const
+
+export const isLexiconExplanationVersion = (version: string): boolean =>
+  version === LEXICON_EXPLANATION_VERSION || version === LEXICON_EXPLANATION_SECONDARY_VERSION
+
 export const PANEL_CATEGORIES_AND_VERSIONS: { [key in PanelCategory]: string[] } = {
   [PanelCategory.BIBLE]: [
     '개역개정',
@@ -32,7 +43,7 @@ export const PANEL_CATEGORIES_AND_VERSIONS: { [key in PanelCategory]: string[] }
   ],
   [PanelCategory.COMMENTARY]: ['매튜헨리', '성경관주', '풀핏주석'],
   [PanelCategory.CODED_BIBLE]: ['개역개정S', '개역한글S'],
-  [PanelCategory.LEXICON]: ['원어설명', '원어설명2', '원어분해'],
+  [PanelCategory.LEXICON]: [LEXICON_EXPLANATION_VERSION, '원어분해'],
   [PanelCategory.NONE]: []
 }
 

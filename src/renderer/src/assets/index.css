@@ -76,3 +76,15 @@
     border: 2px solid oklch(62.3% 0.214 259.815);
   }
 }
+
+.panel-rich-text .text-accent-1 {
+  color: #ff2056;
+}
+
+.panel-rich-text .text-accent-2 {
+  color: #155dfc;
+}
+
+.panel-rich-text .text-accent-3 {
+  color: #9810fa;
+}
