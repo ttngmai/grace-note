@@ -18,6 +18,11 @@ export const LEXICON_EXPLANATION_SOURCES = [
 export const isLexiconExplanationVersion = (version: string): boolean =>
   version === LEXICON_EXPLANATION_VERSION || version === LEXICON_EXPLANATION_SECONDARY_VERSION
 
+export const CODED_BIBLE_VERSIONS = ['개역개정S', '개역한글S'] as const
+
+export const isCodedBibleVersion = (version: string): boolean =>
+  CODED_BIBLE_VERSIONS.some((codedVersion) => codedVersion === version)
+
 export const PANEL_CATEGORIES_AND_VERSIONS: { [key in PanelCategory]: string[] } = {
   [PanelCategory.BIBLE]: [
     '개역개정',
@@ -42,8 +47,8 @@ export const PANEL_CATEGORIES_AND_VERSIONS: { [key in PanelCategory]: string[] }
     'NAS2020'
   ],
   [PanelCategory.COMMENTARY]: ['매튜헨리', '성경관주', '풀핏주석'],
-  [PanelCategory.CODED_BIBLE]: ['개역개정S', '개역한글S'],
-  [PanelCategory.LEXICON]: [LEXICON_EXPLANATION_VERSION, '원어분해'],
+  [PanelCategory.CODED_BIBLE]: [...CODED_BIBLE_VERSIONS],
+  [PanelCategory.LEXICON]: [LEXICON_EXPLANATION_VERSION, '원어분해', ...CODED_BIBLE_VERSIONS],
   [PanelCategory.NONE]: []
 }
 

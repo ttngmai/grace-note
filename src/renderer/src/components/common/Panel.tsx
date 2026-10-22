@@ -1,7 +1,11 @@
 import tw from 'twin.macro'
 import { useSortable } from '@dnd-kit/sortable'
 import { IconGripVertical } from '@tabler/icons-react'
-import { isLexiconExplanationVersion, LEXICON_EXPLANATION_VERSION } from '@shared/constants'
+import {
+  isCodedBibleVersion,
+  isLexiconExplanationVersion,
+  LEXICON_EXPLANATION_VERSION
+} from '@shared/constants'
 import { PanelCategory, PanelLayout, PanelSettings } from '@shared/types'
 import PanelSettingsDropdown from './PanelSettingsDropdown'
 import PanelCategorySelector from './PanelCategorySelector'
@@ -75,7 +79,7 @@ const Panel: React.FC<PanelProps> = ({
           />
         )
       case PanelCategory.LEXICON: {
-        if (version === '원어분해') {
+        if (version === '원어분해' || isCodedBibleVersion(version)) {
           return (
             <CodedBiblePanel
               version={version}
