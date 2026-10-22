@@ -93,28 +93,6 @@ export default function PanelCategorySelector({
 
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger className={dropdownMenuItemStyle}>
-              {PanelCategory.CODED_BIBLE}
-              <IconChevronRight size={14} className="ml-auto" />
-            </DropdownMenu.SubTrigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.SubContent className="w-100pxr border border-gray-300 bg-white rounded-md shadow-sm">
-                {PANEL_CATEGORIES_AND_VERSIONS[PanelCategory.CODED_BIBLE].map((codedBible) => (
-                  <DropdownMenu.Item
-                    key={codedBible}
-                    onSelect={() => {
-                      selectPanelCategoryAndVersion(panelId, PanelCategory.CODED_BIBLE, codedBible)
-                    }}
-                    className={dropdownMenuItemStyle}
-                  >
-                    {codedBible}
-                  </DropdownMenu.Item>
-                ))}
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Sub>
-
-          <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger className={dropdownMenuItemStyle}>
               {PanelCategory.LEXICON}
               <IconChevronRight size={14} className="ml-auto" />
             </DropdownMenu.SubTrigger>
