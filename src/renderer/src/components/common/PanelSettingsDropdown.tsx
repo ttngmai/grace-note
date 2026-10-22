@@ -1,7 +1,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { IconCrown, IconMenu2 } from '@tabler/icons-react'
 import Button from './Button'
-import tw, { TwStyle } from 'twin.macro'
+import { TwStyle } from 'twin.macro'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
 import ModalPortal from '@renderer/utils/ModalPortal'
@@ -10,7 +10,6 @@ import { panelGridAtom } from '@renderer/store'
 import { mergePanels, unmergePanel } from '@renderer/utils/panelUtils'
 import { PANEL_ROWS } from '@shared/constants'
 import PanelTitleSizeModal from './PanelTitleSizeModal'
-import PanelContentSizeModal from './PanelContentSizeModal'
 
 type PanelSettingsDropdownProps = {
   panelId: string
@@ -26,7 +25,6 @@ export default function PanelSettingsDropdown({
   const settings = panelGrid.settings[panelId]
 
   const [openPanelTitleSizeModal, setOpenPanelTitleSizeModal] = useState<boolean>(false)
-  const [openPanelContentSizeModal, setOpenPanelContentSizeModal] = useState<boolean>(false)
   const [openStylesModal, setOpenStylesModal] = useState<boolean>(false)
 
   const toggleBasePanel = (id: string): void => {
@@ -100,14 +98,6 @@ export default function PanelSettingsDropdown({
             </DropdownMenu.Item>
             <DropdownMenu.Item
               onSelect={() => {
-                setOpenPanelContentSizeModal(true)
-              }}
-              className={dropdownMenuItemStyle}
-            >
-              내용 크기 (공통)
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              onSelect={() => {
                 setOpenStylesModal(true)
               }}
               className={dropdownMenuItemStyle}
@@ -146,11 +136,6 @@ export default function PanelSettingsDropdown({
       {openPanelTitleSizeModal && (
         <ModalPortal>
           <PanelTitleSizeModal onClose={() => setOpenPanelTitleSizeModal(false)} />
-        </ModalPortal>
-      )}
-      {openPanelContentSizeModal && (
-        <ModalPortal>
-          <PanelContentSizeModal onClose={() => setOpenPanelContentSizeModal(false)} />
         </ModalPortal>
       )}
     </>
